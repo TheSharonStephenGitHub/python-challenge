@@ -1,15 +1,17 @@
 import os
 import csv
 
+#opened the csv file
 budget_csv = os.path.join("Resources", "budget_data.csv")
 
 with open(budget_csv, 'r') as csvfile:
 
-    # Split the data on commas
     csvreader = csv.reader(csvfile, delimiter=',')
 
+    #excludes the header row
     next(csvreader)
 
+    #initializes all of the variables used
     total_months = 0
 
     total = 0
@@ -24,14 +26,19 @@ with open(budget_csv, 'r') as csvfile:
     min_date = ""
     min_change = 0
 
+    #loops through each row
     for row in csvreader:
 
+        #calculates the marginal change
         initial_change = next_change
         next_change = int(row[1])
         total_sum = next_change - initial_change
 
+        #excludes the first change
         if(not(initial_change == 0)):
             total_sum_array.append(total_sum)
+
+            #ensures the values of max and min change hold
             if(total_sum > max_change):
                 max_change = total_sum
                 max_date = str(row[0])
@@ -56,6 +63,8 @@ with open(budget_csv, 'r') as csvfile:
     print(f"Greatest Increase in Profits: {max_date} (${max_change})")
     print(f"Greatest Decrease in Profits: {min_date} (${min_change})")
 
+
+#exports to txt
 file = open("Analysis/Analysis_PyBank.txt","w")
 file.write("Financial Analysis\n")
 file.write("----------------------------\n")
